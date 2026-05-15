@@ -13,7 +13,7 @@ import plotly.express as px
 # i don't fully understand how it fixed it
 # but it did
 import plotly.io as pio
-pio.renderers.default = "iframe"
+pio.renderers.default = "notebook_connected"
 
 url = "https://data.illinois.gov/resource/2ke2-x724.csv?$limit=50000"
 df = pd.read_csv(url)
