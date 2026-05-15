@@ -57,7 +57,7 @@ fig1.update_layout(
 )
 
 fig1.update_yaxes(categoryorder="total ascending")
-print(fig1.show())
+fig1.show()
 
 # fig2 dedicated to finding distribution of employee pay rates
 fig2 = px.histogram(
@@ -74,7 +74,7 @@ fig2.update_layout(
     title_font_size=26
 )
 
-print(fig2.show())
+fig2.show()
 
 # job titles
 title_col = "position_title"
@@ -99,5 +99,4 @@ fig3.update_layout(
 
 fig3.update_yaxes(categoryorder="total ascending")
 
-# fig3.show()
-print(fig3.show())
+fig3.show()
