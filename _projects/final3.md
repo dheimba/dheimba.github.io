@@ -1,0 +1,103 @@
+---
+layout: page
+title: Final 3.1
+permalink: /projects/final3/
+---
+
+import pandas as pd
+import plotly.express as px
+
+# for these two lines i had to use google to 
+# figure out why plotly was printing
+# whitespaces instead of my figs
+# i don't fully understand how it fixed it
+# but it did
+import plotly.io as pio
+pio.renderers.default = "iframe"
+
+url = "https://data.illinois.gov/resource/2ke2-x724.csv?$limit=50000"
+df = pd.read_csv(url)
+
+print(df.columns)
+
+# setup salary and agency columns
+salary_col = "period_pay_rate"
+df[salary_col] = pd.to_numeric(df[salary_col], errors="coerce")
+agency_col = "agency"
+
+df = df.dropna(subset=[salary_col])
+
+# get the top 15 agencies by payrate
+agency_salary = (
+    df.groupby(agency_col)[salary_col]
+    .mean()
+    .reset_index()
+    .sort_values(by=salary_col, ascending=False)
+)
+top_agencies = agency_salary.head(15)
+
+# fig1 dedicated to finding top paying agencies
+fig1 = px.bar(
+    top_agencies,
+    x=salary_col,
+    y=agency_col,
+    orientation="h",
+    color=salary_col,
+    title="Top Paying Illinois State Agencies (Based on Pay Rate)",
+    labels={
+        salary_col: "Average Pay Rate ($)",
+        agency_col: "Agency"
+    }
+)
+
+fig1.update_layout(
+    template="plotly_white",
+    height=600,
+    title_font_size=26
+)
+
+fig1.update_yaxes(categoryorder="total ascending")
+print(fig1.show())
+
+# fig2 dedicated to finding distribution of employee pay rates
+fig2 = px.histogram(
+    df,
+    x=salary_col,
+    nbins=50,
+    title="Distribution of Illinois State Employee Pay Rates",
+    labels={salary_col: "Pay Rate ($)"}
+)
+
+fig2.update_layout(
+    template="plotly_white",
+    height=600,
+    title_font_size=26
+)
+
+print(fig2.show())
+
+# job titles
+title_col = "position_title"
+top_titles = df[title_col].value_counts().head(15).reset_index()
+top_titles.columns = ["position_title", "count"]
+
+# fig 3 dedicated to finding most common positions
+fig3 = px.bar(
+    top_titles,
+    x="count",
+    y="position_title",
+    orientation="h",
+    title="Most Common State Employee Positions",
+    labels={"count": "Number of Employees", "position_title": "Position Title"}
+)
+
+fig3.update_layout(
+    template="plotly_white",
+    height=600,
+    title_font_size=26
+)
+
+fig3.update_yaxes(categoryorder="total ascending")
+
+# fig3.show()
+print(fig3.show())
