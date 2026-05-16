@@ -3,7 +3,7 @@ layout: page
 title: Final 3.1
 permalink: /projects/final3/
 ---
-
+```
 import pandas as pd
 import plotly.express as px
 
@@ -100,3 +100,5 @@ fig3.update_layout(
 fig3.update_yaxes(categoryorder="total ascending")
 
 fig3.show()
+
+```
